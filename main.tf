@@ -8,7 +8,7 @@ provider "google" {
 
 # terraform {
 #   backend "gcs" {
-#     bucket  = "kodrclub-tfgl"      #creado en bootstrap
+#     bucket  = "my-bucket-name"      #created in bootstrap
 #     prefix  = "terraform/state"
 #   }
 # }
@@ -54,6 +54,11 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
+resource "google_dns_managed_zone" "primary" {
+  name        = var.dns_zone_name
+  dns_name    = "${var.domain_name}."
+  description = "DNS zone for K8s cluster ingress"
+}
 
 
 
