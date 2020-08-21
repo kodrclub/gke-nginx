@@ -10,3 +10,5 @@ variable "dns_zone_name" {}
 variable "domain_name"   {}
 
 
+variable "cert_manager_version" {default = ""}
+variable "ingress_version" {default = ""}

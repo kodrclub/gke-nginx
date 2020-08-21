@@ -1,10 +1,10 @@
 #
-data "google_container_engine_versions" "primary" {
+data "google_container_engine_versions" "kubernetes" {
   version_prefix = var.k8s_version_prefix
 }
 
 # --no-enable-autoupgrade \
-resource "google_container_cluster" "primary" {
+resource "google_container_cluster" "kubernetes" {
   name     = var.cluster_name
   location = var.cluster_location
 
@@ -14,15 +14,15 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count  = 1
 
-  min_master_version  = data.google_container_engine_versions.primary.latest_node_version
+  min_master_version  = data.google_container_engine_versions.kubernetes.latest_node_version
 }
 
-resource "google_container_node_pool" "primary_nodes" {
+resource "google_container_node_pool" "kubernetes_nodes" {
   name_prefix = var.cluster_name
   location    = var.cluster_location
-  cluster     = google_container_cluster.primary.name
+  cluster     = google_container_cluster.kubernetes.name
   node_count  = var.cluster_pool_node_count
-  version     = data.google_container_engine_versions.primary.latest_node_version
+  version     = data.google_container_engine_versions.kubernetes.latest_node_version
 
   management {
     auto_upgrade = false
