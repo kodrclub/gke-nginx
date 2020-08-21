@@ -10,3 +10,5 @@ output public_ips {value = module.ingress.public_ips}
 output ingress_version {value = module.ingress.version}
 
 output cert_manager_version {value = module.cert_manager.version}
+
+output name_servers {value = module.dns.name_servers}
