@@ -1,10 +1,13 @@
-#
+# Retrieve an access token as the Terraform runner
+data "google_client_config" "provider" {}
+
+# get available k8s version closest to desired
 data "google_container_engine_versions" "kubernetes" {
   version_prefix = var.k8s_version_prefix
 }
 
-# --no-enable-autoupgrade \
-resource "google_container_cluster" "kubernetes" {
+#create the cluster
+resource "google_container_cluster" "k8s" {
   name     = var.cluster_name
   location = var.cluster_location
 
@@ -17,10 +20,11 @@ resource "google_container_cluster" "kubernetes" {
   min_master_version  = data.google_container_engine_versions.kubernetes.latest_node_version
 }
 
-resource "google_container_node_pool" "kubernetes_nodes" {
+#create an independent node instance pool to use with the cluster
+resource "google_container_node_pool" "k8s_nodes" {
   name_prefix = var.cluster_name
   location    = var.cluster_location
-  cluster     = google_container_cluster.kubernetes.name
+  cluster     = google_container_cluster.k8s.name
   node_count  = var.cluster_pool_node_count
   version     = data.google_container_engine_versions.kubernetes.latest_node_version
 
@@ -41,7 +45,3 @@ resource "google_container_node_pool" "kubernetes_nodes" {
     ]
   }
 }
-
-
-
-

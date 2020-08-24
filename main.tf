@@ -11,18 +11,18 @@ provider "google" {
 
 provider "kubernetes" {
   version = "~> 1.12"
-  host                   = module.gke.endpoint[0]
-  client_certificate     = module.gke.client_certificate
-  client_key             = module.gke.client_key
+  load_config_file       = false
+  host                   = module.gke.endpoint
+  token                  = module.gke.token
   cluster_ca_certificate = module.gke.cluster_ca_certificate
 }
 
-provider helm {
+provider "helm" {
   version = "~> 1.2.4"
   kubernetes {
-    host                   = module.gke.endpoint[0]
-    client_certificate     = module.gke.client_certificate
-    client_key             = module.gke.client_key
+    load_config_file       = false
+    host                   = module.gke.endpoint
+    token                  = module.gke.token
     cluster_ca_certificate = module.gke.cluster_ca_certificate
   }
 }
@@ -44,7 +44,7 @@ provider helm {
 #
 # GKE Cluster
 #
-module gke {
+module "gke" {
   source                  = "./modules/gke"
   cluster_location        = var.main_zone
   cluster_name            = var.cluster_name
@@ -55,29 +55,29 @@ module gke {
 #
 # Ingress-nginx
 #
-module ingress {
-  source          = "./modules/k8s-ingress"
-  ingress_name    = var.cluster_name
-  ingress_version = var.ingress_version
-}
+# module "ingress" {
+#   source          = "./modules/k8s-ingress"
+#   ingress_name    = var.cluster_name
+#   ingress_version = var.ingress_version
+# }
 
 #
 # cert-manager
 #
-module cert_manager {
-  source               = "./modules/k8s-cert-manager"
-  cert_manager_version = var.cert_manager_version
-}
+# module "cert_manager" {
+#   source               = "./modules/k8s-cert-manager"
+#   cert_manager_version = var.cert_manager_version
+# }
 
 #
 # DNS
 #
-module dns {
-  source        = "./modules/dns"
-  dns_zone_name = var.dns_zone_name
-  domain_name   = var.domain_name
-  ip            = module.ingress.public_ips.0
-}
+# module "dns" {
+#   source        = "./modules/dns"
+#   dns_zone_name = var.dns_zone_name
+#   domain_name   = var.domain_name
+#   ip            = module.ingress.public_ips.0
+# }
 
 
 
