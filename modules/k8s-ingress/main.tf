@@ -7,8 +7,8 @@ resource helm_release ingress {
   name = var.ingress_name
   repository ="https://kubernetes.github.io/ingress-nginx"
   chart = "ingress-nginx"
-  version      = ""
-  force_update = true
+  version = var.ingress_version
+  # force_update = true
   cleanup_on_fail = true
   namespace = var.ingress_namespace
 

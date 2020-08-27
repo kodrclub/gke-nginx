@@ -12,3 +12,6 @@ variable "domain_name"   {}
 
 variable "cert_manager_version" {default = ""}
 variable "ingress_version" {default = ""}
+
+variable "grafana_chart_version" {default =""}
+variable "prometheus_chart_version" {default =""}

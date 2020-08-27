@@ -70,6 +70,16 @@ module "cert_manager" {
 }
 
 #
+# monitoring
+#
+module "monitoring" {
+  source             = "./modules/k8s-monitoring"
+  monitoring_name    = var.cluster_name
+  grafana_chart_version    = var.grafana_chart_version
+  prometheus_chart_version = var.prometheus_chart_version
+}
+
+#
 # DNS
 #
 module "dns" {
