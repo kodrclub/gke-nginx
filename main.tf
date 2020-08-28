@@ -86,6 +86,7 @@ module "dns" {
   source        = "./modules/dns"
   dns_zone_name = var.dns_zone_name
   domain_name   = var.domain_name
+  subdomains    = var.subdomains
   ip            = module.ingress.public_ips.0
 }
 

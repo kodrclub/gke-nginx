@@ -8,6 +8,7 @@ variable "k8s_version_prefix"      {}
 
 variable "dns_zone_name" {}
 variable "domain_name"   {}
+variable "subdomains"    {}
 
 
 variable "cert_manager_version" {default = ""}
